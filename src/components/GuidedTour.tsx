@@ -373,23 +373,23 @@ export function GuidedTour({
             )}
 
             {/* Bottom-Docked Floating Tour Card (Leaves 85% of screen completely visible and interactive!) */}
-            <div className="fixed bottom-3 inset-x-3 sm:bottom-5 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 max-w-xl w-full z-50 pointer-events-auto">
+            <div className="fixed bottom-3 left-3 right-3 sm:bottom-5 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 max-w-xl w-auto sm:w-full z-50 pointer-events-auto">
               <motion.div
                 key={currentStep.id}
                 initial={{ opacity: 0, y: 15, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 15, scale: 0.98 }}
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="bg-[#fdfdf9]/95 backdrop-blur-md border border-[#cad5c6] rounded-2xl p-3.5 sm:p-5 shadow-2xl text-[#27352b]"
+                className="bg-[#fdfdf9]/95 backdrop-blur-md border border-[#cad5c6] rounded-2xl p-3.5 sm:p-5 shadow-2xl text-[#27352b] box-border"
                 role="dialog"
                 aria-modal="false"
               >
                 {/* Header with Step Badge & Controls */}
-                <div className="flex items-center justify-between gap-3 mb-2.5">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wide bg-[#e4ede0] text-[#365744]">
+                <div className="flex items-center justify-between gap-2 mb-2.5">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wide bg-[#e4ede0] text-[#365744] truncate">
                       {currentStep.icon}
-                      {currentStep.badge}
+                      <span>{currentStep.badge}</span>
                     </span>
                     {/* Step Dots */}
                     <div className="hidden sm:flex items-center gap-1 ml-1">
@@ -431,9 +431,9 @@ export function GuidedTour({
                 {/* Real-Time Action Prompt / Jump */}
                 {currentStep.actionPrompt && (
                   <div className="mb-3.5 text-xs text-[#52634f] bg-[#f2f6ee] border border-[#dce5d7] rounded-xl px-3 py-2 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
                       <span className="w-2 h-2 rounded-full bg-[#5b7756] shrink-0 animate-pulse" />
-                      <span>{currentStep.actionPrompt}</span>
+                      <span className="break-words leading-tight">{currentStep.actionPrompt}</span>
                     </div>
                     {currentStep.id === 'start-dilemma' && onStartExperience && (
                       <button
@@ -517,16 +517,16 @@ export function GuidedTour({
 
         {/* Floating Resume Badge when trial is paused and modal is closed */}
         {phase === 'tour' && isPausedForTrial && !isModalOpen && (
-          <div className="fixed bottom-6 right-6 z-50 pointer-events-auto animate-fadeIn">
+          <div className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-50 pointer-events-auto animate-fadeIn max-w-[calc(100vw-24px)]">
             <button
               type="button"
               onClick={() => setIsPausedForTrial(false)}
               style={{ color: '#27352b', backgroundColor: '#eef4eb' }}
-              className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full border border-[#cad5c6] shadow-lg hover:shadow-xl text-xs font-semibold cursor-pointer transition-all hover:scale-105 active:scale-95"
+              className="inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full border border-[#cad5c6] shadow-lg hover:shadow-xl text-xs font-semibold cursor-pointer transition-all hover:scale-105 active:scale-95 max-w-full"
             >
-              <Compass size={15} className="text-[#365744]" />
-              <span>Resume Tour ({currentStepIndex + 1}/{TOUR_STEPS.length})</span>
-              <ArrowRight size={14} />
+              <Compass size={15} className="text-[#365744] shrink-0" />
+              <span className="truncate">Resume Tour ({currentStepIndex + 1}/{TOUR_STEPS.length})</span>
+              <ArrowRight size={14} className="shrink-0" />
             </button>
           </div>
         )}
