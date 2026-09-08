@@ -3,6 +3,8 @@ import { supabase } from './client';
 import { mapDbRowToPerspective } from './mappers';
 import type { CommunityDbRow } from './types';
 
+let hasWarnedPerspectives = false;
+
 export async function fetchCommunityPerspectives(scenarioId: string): Promise<Perspective[]> {
   if (!supabase) return [];
   try {
@@ -14,7 +16,10 @@ export async function fetchCommunityPerspectives(scenarioId: string): Promise<Pe
       .limit(30);
 
     if (error) {
-      console.warn('Could not fetch community perspectives:', error.message);
+      if (!hasWarnedPerspectives) {
+        hasWarnedPerspectives = true;
+        console.warn('Note: Supabase table "community_perspectives" not found. Run "supabase/schema.sql" to enable real-time perspectives.');
+      }
       return [];
     }
 

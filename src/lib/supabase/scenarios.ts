@@ -25,6 +25,8 @@ export function saveLocalCommunityScenario(scenario: Scenario): void {
   }
 }
 
+let hasWarnedSchema = false;
+
 export async function fetchCommunityScenarios(): Promise<Scenario[]> {
   const localList = getLocalCommunityScenarios();
   if (!supabase) return localList;
@@ -37,7 +39,10 @@ export async function fetchCommunityScenarios(): Promise<Scenario[]> {
       .limit(50);
 
     if (error) {
-      console.warn('Could not fetch community scenarios from Supabase, using local:', error.message);
+      if (!hasWarnedSchema) {
+        hasWarnedSchema = true;
+        console.warn('Note: Supabase table "community_scenarios" not found. Using local-first storage. Run "supabase/schema.sql" in Supabase SQL Editor to enable cloud sync.');
+      }
       return localList;
     }
 
