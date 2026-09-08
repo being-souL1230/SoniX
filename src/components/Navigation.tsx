@@ -26,7 +26,7 @@ export function Navigation({ page, onNavigate, onStart, onJourney, onAsk, onTour
         <div className="nav-actions">
           {onTour && (
             <button
-              className="tour-nav-btn text-xs font-semibold text-[#27352b] bg-[#eef3ea] hover:bg-[#dce7d6] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-[#cad5c6] transition-all cursor-pointer shadow-xs active:scale-95"
+              className="tour-nav-btn text-xs font-semibold text-[#27352b] bg-[#eef3ea] hover:bg-[#dce7d6] hidden lg:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-[#cad5c6] transition-all cursor-pointer shadow-xs active:scale-95"
               onClick={onTour}
               title="Take a quick tour of SoniX"
             >
@@ -34,12 +34,16 @@ export function Navigation({ page, onNavigate, onStart, onJourney, onAsk, onTour
             </button>
           )}
           {onAsk && (
-            <button className="button button-outline button-small nav-ask-btn" data-tour="nav-ask" onClick={onAsk}>
+            <button className="button button-outline button-small nav-ask-btn hidden md:inline-flex" data-tour="nav-ask" onClick={onAsk}>
               <MessageSquarePlus size={14} /> Ask a question
             </button>
           )}
           <button className="journey-link" data-tour="nav-journey" onClick={onJourney}>My journey <ArrowUpRight size={15} /></button>
-          <button className="button button-dark button-small" onClick={onStart}>Start exploring <ArrowRight size={15} /></button>
+          <button className="button button-dark button-small nav-start-btn" onClick={onStart}>
+            <span className="hidden sm:inline">Start exploring</span>
+            <span className="sm:hidden">Explore</span>
+            <ArrowRight size={15} />
+          </button>
         </div>
         <button className="icon-button mobile-menu-toggle" aria-expanded={mobileOpen} aria-controls="mobile-navigation" aria-label={mobileOpen ? 'Close menu' : 'Open menu'} onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X size={23} /> : <Menu size={23} />}</button>
       </div>

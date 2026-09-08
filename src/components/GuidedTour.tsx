@@ -258,7 +258,7 @@ export function GuidedTour({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-[#fdfdf9] border border-[#e0e5d9] rounded-[28px] p-6 sm:p-8 shadow-2xl text-[#27352b]"
+              className="relative w-full max-w-lg max-h-[88dvh] overflow-y-auto bg-[#fdfdf9] border border-[#e0e5d9] rounded-[24px] sm:rounded-[28px] p-5 sm:p-8 shadow-2xl text-[#27352b]"
               role="dialog"
               aria-modal="true"
               aria-labelledby="tour-welcome-title"
@@ -373,14 +373,14 @@ export function GuidedTour({
             )}
 
             {/* Bottom-Docked Floating Tour Card (Leaves 85% of screen completely visible and interactive!) */}
-            <div className="fixed bottom-5 inset-x-4 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 max-w-xl w-full z-50 pointer-events-auto">
+            <div className="fixed bottom-3 inset-x-3 sm:bottom-5 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 max-w-xl w-full z-50 pointer-events-auto">
               <motion.div
                 key={currentStep.id}
                 initial={{ opacity: 0, y: 15, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 15, scale: 0.98 }}
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="bg-[#fdfdf9]/95 backdrop-blur-md border border-[#cad5c6] rounded-2xl p-4 sm:p-5 shadow-2xl text-[#27352b]"
+                className="bg-[#fdfdf9]/95 backdrop-blur-md border border-[#cad5c6] rounded-2xl p-3.5 sm:p-5 shadow-2xl text-[#27352b]"
                 role="dialog"
                 aria-modal="false"
               >
@@ -430,7 +430,7 @@ export function GuidedTour({
 
                 {/* Real-Time Action Prompt / Jump */}
                 {currentStep.actionPrompt && (
-                  <div className="mb-3.5 text-xs text-[#52634f] bg-[#f2f6ee] border border-[#dce5d7] rounded-xl px-3 py-2 flex items-center justify-between gap-2">
+                  <div className="mb-3.5 text-xs text-[#52634f] bg-[#f2f6ee] border border-[#dce5d7] rounded-xl px-3 py-2 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-[#5b7756] shrink-0 animate-pulse" />
                       <span>{currentStep.actionPrompt}</span>

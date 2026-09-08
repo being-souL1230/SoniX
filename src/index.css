@@ -23,8 +23,8 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 100px; scrollbar-gutter: stable; }
-body { margin: 0; min-width: 320px; }
+html { scroll-behavior: smooth; scroll-padding-top: 100px; scrollbar-gutter: stable; overflow-x: hidden; width: 100%; max-width: 100vw; }
+body { margin: 0; min-width: 320px; overflow-x: hidden; width: 100%; max-width: 100vw; position: relative; }
 button, input { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { cursor: pointer; }
@@ -928,30 +928,30 @@ button.scenario-orb:hover { background: #f6f9eb; border-color: #8c9e7e; transfor
 
 @media (max-width: 560px) {
   html { scroll-padding-top: 87px; }
-  .container, .nav-wrap { width: calc(100% - 40px); }
-  .nav-wrap { height: 71px; gap: 12px; }
-  .brand { font-size: 26px; gap: 4px; letter-spacing: -1.5px; }
-  .brand svg { width: 29px; height: 29px; }
-  .nav-actions { margin-left: auto; }
+  .container, .nav-wrap { width: calc(100% - 32px); }
+  .nav-wrap { height: 68px; gap: 8px; }
+  .brand { font-size: 24px; gap: 4px; letter-spacing: -1.2px; }
+  .brand svg { width: 26px; height: 26px; }
+  .nav-actions { margin-left: auto; gap: 8px; }
   .nav-actions .journey-link { display: none; }
-  .nav-actions > .button { min-height: 37px; padding: 10px 13px; font-size: 9.5px; gap: 13px; }
+  .nav-actions > .button { min-height: 36px; padding: 8px 14px; font-size: 11px; gap: 8px; }
   .nav-actions > .button > svg { width: 13px; }
-  .mobile-menu-toggle { width: 28px; }
+  .mobile-menu-toggle { width: 34px; height: 34px; }
   .mobile-nav { padding-inline: 20px; }
-  .hero-container { padding: 44px 0 390px; }
-  .hero h1 { font-size: 53px; letter-spacing: -3px; margin: 20px 0 23px; line-height: 1.1; }
-  .hero-name { font-size: 1.17em; letter-spacing: -3.5px; }
-  .hero-eyebrow { font-size: 8.7px; letter-spacing: 1.5px; }
-  .hero-description { max-width: 365px; font-size: 13.5px; line-height: 1.9; }
-  .hero-cta { gap: 23px; margin-top: 24px; }
-  .hero-cta .button { font-size: 11.5px; padding: 14px 20px; gap: 20px; }
-  .watch-button { font-size: 10.5px; gap: 9px; }
-  .watch-button > span { width: 32px; height: 32px; }
-  .hero-reassurance { font-size: 8.5px; margin-top: 17px; }
-  .hero-art { height: 393px; bottom: -12px; }
-  .hero-world { width: 600px; left: calc(50% - 390px); }
-  .belief-line .container { min-height: 68px; gap: 12px; font-size: 10px; }
-  .belief-line svg { width: 17px; height: 17px; }
+  .hero-container { padding: 36px 0 360px; }
+  .hero h1 { font-size: clamp(33px, 8.5vw, 48px); letter-spacing: -1.8px; margin: 16px 0 18px; line-height: 1.12; }
+  .hero-name { font-size: 1.1em; letter-spacing: -2px; }
+  .hero-eyebrow { font-size: 8.5px; letter-spacing: 1.3px; }
+  .hero-description { max-width: 365px; font-size: 13px; line-height: 1.8; }
+  .hero-cta { flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+  .hero-cta .button { font-size: 11.5px; padding: 12px 18px; gap: 14px; }
+  .watch-button { font-size: 11px; gap: 8px; }
+  .watch-button > span { width: 30px; height: 30px; }
+  .hero-reassurance { font-size: 8.5px; margin-top: 15px; }
+  .hero-art { height: 360px; bottom: -12px; }
+  .hero-world { width: 560px; left: calc(50% - 360px); }
+  .belief-line .container { min-height: 56px; gap: 8px 12px; font-size: 10px; flex-wrap: wrap; text-align: center; justify-content: center; padding-block: 12px; }
+  .belief-line svg { width: 16px; height: 16px; }
   .section-space { padding-block: 62px; }
   .eyebrow { font-size: 8px; letter-spacing: 1.3px; }
   .section-heading { margin-bottom: 35px; }
@@ -1163,10 +1163,10 @@ button.scenario-orb:hover { background: #f6f9eb; border-color: #8c9e7e; transfor
   .search-field input { font-size: 11.5px; }
   .scenario-grid { grid-template-columns: 1fr; justify-items: center; gap: 26px; }
   .scenario-shell-compact { width: min(100%, 330px); }
-  .scenario-orb-compact { width: min(100%, 330px); padding: 38px; gap: 17px; }
+  .scenario-orb-compact { width: min(100%, 330px); padding: clamp(24px, 6vw, 36px); gap: 14px; }
   .scenario-orb-compact .scenario-category { font-size: 9px; gap: 9px; letter-spacing: 1px; }
   .scenario-orb-compact .scenario-category > svg { width: 26px; height: 26px; }
-  .scenario-orb-compact h3 { font-size: 17px; line-height: 1.6; letter-spacing: -.35px; }
+  .scenario-orb-compact h3 { font-size: 16px; line-height: 1.5; letter-spacing: -.35px; }
   .scenario-orb-compact .scenario-open { font-size: 10.5px; gap: 7px; line-height: 1.5; margin-top: 5px; }
   .scenario-orb-compact .scenario-open > svg { width: 16px; height: 16px; }
   .scenario-save { width: 40px; height: 40px; top: 8%; right: 11%; }
@@ -1191,24 +1191,27 @@ button.scenario-orb:hover { background: #f6f9eb; border-color: #8c9e7e; transfor
   .odyssey-categories button { width: min(100%, 130px); justify-self: center; }
   .odyssey-note { align-items: flex-start; }
   .odyssey-note p { font-size: 8.5px; }
-  .explore-heading-actions { width: 100%; }
-  .explore-heading-actions .button { flex: 1; padding-inline: 14px; gap: 10px; font-size: 10px; }
+  .explore-heading-actions { width: 100%; display: flex; flex-wrap: wrap; gap: 8px; }
+  .explore-heading-actions .button { flex: 1 1 calc(50% - 6px); min-width: 130px; padding: 10px 14px; gap: 8px; font-size: 11px; }
+  .explore-heading-actions .button:first-child { flex: 1 1 100%; }
   .explore-bottom-note { font-size: 9px; line-height: 1.8; }
   .search-empty { padding-block: 45px; }
   .search-empty h2 { font-size: 25px; }
   .search-empty p { font-size: 11px; line-height: 1.9; }
 }
 
-@media (max-width: 380px) {
-  .hero h1 { font-size: 50px; }
-  .hero-cta { gap: 17px; }
-  .hero-cta .button { padding-inline: 18px; gap: 16px; }
-  .watch-button { font-size: 10px; gap: 8px; }
-  .nav-wrap { gap: 10px; }
-  .nav-actions > .button { padding-inline: 11px; gap: 9px; }
-  .belief-line .container { font-size: 9px; gap: 10px; }
-  .scenario-orb-compact { padding: 34px; gap: 16px; }
-  .scenario-orb-compact h3 { font-size: 16.5px; }
+@media (max-width: 420px) {
+  .container, .nav-wrap { width: calc(100% - 24px); }
+  .hero-cta { flex-direction: column; align-items: stretch; width: 100%; max-width: 290px; }
+  .hero-cta .button, .watch-button { width: 100%; justify-content: center; }
+  .explore-heading-actions .button { flex: 1 1 100%; width: 100%; }
+  .scenario-orb-compact { padding: 24px 18px; gap: 11px; }
+  .scenario-orb-compact h3 { font-size: 14.5px; }
+  .step-orb { width: 105px; height: 105px; }
+  .topic-orbits { grid-template-columns: repeat(4, 1fr); gap: 14px 6px; }
+  .topic-orb { max-width: 64px; }
+  .topic-orb svg { width: 20px; height: 20px; }
+  .topic-button { font-size: 9px; gap: 8px; }
   .progress-indicator li:not(:last-child)::after { width: 12px; }
 }
 
