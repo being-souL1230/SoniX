@@ -18,7 +18,7 @@ export function AboutView({ onStart }: { onStart: () => void }) {
       </ol>
       <div className="information-note">
         <Fingerprint size={23} />
-        <p><strong>A deliberately frontend-only prototype.</strong> Seventy-three local situations. Eight curated perspectives for each. React, TypeScript, and your browser. No backend, database, API, authentication, or live user submissions.</p>
+        <p><strong>Local-first architecture with real-time community cloud.</strong> Seventy-three curated dilemmas paired with live community discussions powered by Supabase. React, TypeScript, and anonymous participation. No accounts, profiles, passwords, or algorithmic feeds.</p>
       </div>
       <h3>The social interaction is the shift.</h3>
       <p>Connection comes from a shared situation. Communication comes from the reason behind a choice. Discovery comes from another person's context. Participation means deciding, exploring, and reconsidering, not collecting likes.</p>
@@ -31,18 +31,25 @@ export function PrivacyView({ storageAvailable, onJourney }: { storageAvailable:
   return (
     <section className="information-view">
       <span className="information-icon"><ShieldCheck size={36} strokeWidth={1.3} /></span>
-      <p className="eyebrow">Anonymous is the starting point.</p>
-      <h2>Your thoughts stay<br />on your side of the screen.</h2>
-      <p>SoniX has no application backend. Your choices, opened perspectives, and reflections are held in React state and, when available, saved to <code>localStorage</code> in this browser.</p>
-      <h3>What is saved?</h3>
-      <p>Scenario IDs you save, your original and reconsidered choices, which curated responses you opened, and when you finished a reflection. No names, email addresses, or profile information are collected.</p>
-      <h3>Who receives it?</h3>
-      <p>No choices are sent to a server or analytics service. The site loads its assets and optional fonts when you open it; every product interaction then runs locally. The anonymous identities and stories are fictional, curated examples.</p>
-      <h3>How do I delete it?</h3>
-      <p>Open My journey and select Reset this demo. You will be asked to confirm before your saved situations, choices, and reflections are cleared. Clearing this site's browser data has the same effect.</p>
+      <p className="eyebrow">Privacy & Data Architecture</p>
+      <h2>Your thoughts stay private.<br />Community wisdom is shared.</h2>
+      <p>SoniX uses a <strong>local-first privacy model</strong> paired with an anonymous cloud database powered by <strong>Supabase</strong>. There are no user accounts, passwords, email requirements, or personal tracking cookies.</p>
+
+      <h3>1. What stays strictly on your device (Browser Storage)</h3>
+      <p>Your personal blind choices, reconsidered votes, saved dilemma bookmarks, and private reflection notes are stored locally in your browser (<code>localStorage</code>). SoniX never tracks your personal voting history on our servers, and no analytics service monitors your choices.</p>
+
+      <h3>2. What connects to the cloud (Supabase Database)</h3>
+      <p>When you participate in community features — such as <strong>posting a dilemma</strong> or <strong>sharing an anonymous perspective</strong> — your submission is stored in our Supabase cloud database so other thinkers can discover it. These submissions are completely anonymous and never linked to personal identifiers or IP tracking.</p>
+
+      <h3>3. Real-Time Community Sync</h3>
+      <p>The platform combines 73 foundational curated dilemmas with real-time community dilemmas and perspectives fetched from Supabase, featuring instant fallback to local storage if offline.</p>
+
+      <h3>4. How do I delete or reset my data?</h3>
+      <p>Open <strong>My journey</strong> and select <strong>Reset this demo</strong>. This immediately wipes all your locally saved dilemmas, choices, reflections, and notes from your browser. Clearing your browser's site data produces the exact same result.</p>
+
       <div className="information-note">
         <Fingerprint size={22} />
-        <p>{storageAvailable ? 'Local storage is available in this browser. Your journey can continue on your next visit to this same device and browser.' : 'Local storage is unavailable. You can use the entire experience, but your progress will be lost when you close or refresh this page.'}</p>
+        <p>{storageAvailable ? 'Local storage is active in this browser. Your private journey remains on this device until you choose to reset it.' : 'Local storage is unavailable. You can use the entire experience, but private progress will be lost when you close or refresh this page.'}</p>
       </div>
       <button className="button button-dark" onClick={onJourney}>Manage my journey <ArrowRight size={16} /></button>
     </section>
