@@ -1,0 +1,21 @@
+export const howSteps = [
+  { title: 'Make your choice.', subtitle: 'One situation. Your honest instinct.', detail: 'Start with a real-life situation and choose the answer closest to you. Other responses stay hidden, so your first choice is genuinely yours.' },
+  { title: 'See the other side.', subtitle: 'Different minds. Different decisions.', detail: 'Reveal eight curated anonymous perspectives. There are no profiles to impress and no most-popular opinion to chase, just different ways to see the same moment.' },
+  { title: 'Understand the why.', subtitle: 'Go beyond the answer.', detail: 'Open a perspective to understand the experience and reasoning behind it. Compare it with your own, without needing to agree.' },
+  { title: 'Think again.', subtitle: 'Keep it. Change it. Stay curious.', detail: 'Would you make the same choice now? Keep your answer, change it, or leave it open. Your reflection captures the before and after, just for you.' },
+];
+
+export const reflections = [
+  { quote: 'I can understand your choice without making it mine.', label: 'A little more empathy', avatar: 0, title: 'Understanding is not the same as agreeing.', body: 'SoniX makes room for the story behind an answer. Two people can choose differently and still recognize something human in each other. The point is not to find the most convincing person. It is to leave with a more generous picture of why someone might see things another way.' },
+  { quote: 'Maybe changing my mind means I am paying attention.', label: 'A little more possibility', avatar: 2, title: 'A changed mind is not a lost argument.', body: 'On most social platforms, consistency can feel like something to defend. Here, reconsidering is part of the experience. You can change your answer, stand by it with more context, or stay unsure. None of those outcomes earns more points, because there are no points to earn.' },
+  { quote: 'For once, I am thinking about the why. Not the likes.', label: 'A little more meaning', avatar: 1, title: 'Connection without the performance.', body: 'There are no followers, public profiles, comments, or popularity rankings here. A shared situation is the starting point. A thoughtfully expressed reason is the connection. Your only audience for the final reflection is you.' },
+];
+
+export const faqs = [
+  { question: 'What makes SoniX different?', answer: 'Most social platforms ask you to scroll, post, or react. SoniX asks you to choose, understand, and reconsider. You make a blind first choice about a real situation, explore the reasoning behind other choices, and decide whether your perspective has shifted. No feeds, followers, or likes.' },
+  { question: 'Do I need an account?', answer: 'No. Start exploring immediately. Your saved situations, choices, and reflections can stay in your browser on this device, but no account, email address, or personal information is required.' },
+  { question: 'Are these responses from real people?', answer: 'This frontend-only prototype contains 73 original situations and 584 carefully written, fictional anonymous perspectives. They are curated to reflect varied human reasoning, not live submissions or research findings. Choice percentages describe each small local set, plus your own choice, not public opinion.' },
+  { question: 'What if I do not change my mind?', answer: 'That is completely fine. Understanding another point of view does not require adopting it. Keep your choice, choose a different answer, or say you are unsure. The reflection makes space for all three.' },
+  { question: 'Where does my journey live?', answer: 'Only in localStorage in this browser. Nothing is sent to a server. You can reset everything from My journey. Clearing your browser data also removes your reflections, and private browsing may not keep them after you close the window.' },
+  { question: 'Is SoniX free to use?', answer: 'The complete prototype is free. Every situation, perspective, and reflection is available without a subscription, payment details, or an upgrade. There is no checkout or paid tier in this demo.' },
+];
