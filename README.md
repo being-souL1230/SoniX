@@ -8,7 +8,7 @@ Instead of doomscrolling through profiles or algorithms, a visitor encounters a 
 
 **Choose > Reveal > Explore > Reconsider > Reflect.**
 
-![Original SoniX hero artwork](public/images/perspective-world.png)
+![SoniX Hero Section](public/images/Hero%20Section.png)
 
 ---
 
@@ -157,7 +157,8 @@ src/
     JourneyView.tsx               Personal journey history, note previews, and reset dialog
     InformationViews.tsx          About, privacy, and methodology disclosures
 public/
-  images/perspective-world.png    Original compressed hero illustration
+  images/Hero Section.png         Hero section illustration & previews
+  images/perspective-world.png    Original compressed perspective artwork
   sonix-mark.svg                  Vector brand favicon
 docs/
   QA.md                           Quality assurance guide & executed test matrix
