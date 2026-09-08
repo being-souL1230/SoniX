@@ -158,7 +158,8 @@ src/
     InformationViews.tsx          About, privacy, and methodology disclosures
 public/
   images/Hero Section.png         Hero section illustration & previews
-  images/perspective-world.png    Original compressed perspective artwork
+  images/perspective-world.webp   High-efficiency WebP perspective world artwork
+  images/sonix-*.webp             Step & connection illustrations in WebP format
   sonix-mark.svg                  Vector brand favicon
 docs/
   QA.md                           Quality assurance guide & executed test matrix
