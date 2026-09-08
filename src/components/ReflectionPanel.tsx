@@ -1,26 +1,51 @@
-import { useState } from 'react';
-import { ArrowRight, ArrowUpRight, Check, Fingerprint, MoveRight, Send, MessageSquarePlus, AlertCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Check,
+  Fingerprint,
+  MoveRight,
+  Send,
+  MessageSquarePlus,
+  AlertCircle,
+  PencilLine,
+} from 'lucide-react';
 import { ComparisonView } from './ComparisonView';
 import type { Scenario, Session, OptionId } from '../types/social';
 import { submitCommunityPerspective } from '../lib/supabase';
+
+interface ReflectionPanelProps {
+  scenario: Scenario;
+  session: Session;
+  storageAvailable: boolean;
+  note: string;
+  nextLabel?: string;
+  onSaveNote: (note: string) => void;
+  onNext: () => void;
+  onJourney: () => void;
+}
 
 export function ReflectionPanel({
   scenario,
   session,
   storageAvailable,
+  note,
+  nextLabel,
+  onSaveNote,
   onNext,
   onJourney,
-}: {
-  scenario: Scenario;
-  session: Session;
-  storageAvailable: boolean;
-  onNext: () => void;
-  onJourney: () => void;
-}) {
+}: ReflectionPanelProps) {
+  const [draft, setDraft] = useState(note);
+  const [saved, setSaved] = useState(false);
   const original = scenario.options.find((option) => option.id === session.selectedOption)!;
   const current = scenario.options.find((option) => option.id === session.reconsideredOption);
   const unsure = session.reconsideredOption === 'unsure';
   const changed = !unsure && original.id !== current?.id;
+
+  useEffect(() => {
+    setDraft(note);
+    setSaved(false);
+  }, [scenario.id, note]);
 
   // The active final choice
   const finalOptionId: OptionId = (current?.id ?? original.id) as OptionId;
@@ -116,6 +141,50 @@ export function ReflectionPanel({
 
       {changed && <ComparisonView scenario={scenario} selected={current?.id ?? null} />}
 
+      {/* Private Reflection Note */}
+      <section className="private-note">
+        <div>
+          <span className="private-note-icon">
+            <PencilLine size={19} />
+          </span>
+          <div>
+            <p className="eyebrow">Only for you</p>
+            <h3>What changed, or stayed with you?</h3>
+          </div>
+        </div>
+        <textarea
+          value={draft}
+          maxLength={400}
+          onChange={(event) => {
+            setDraft(event.target.value);
+            setSaved(false);
+          }}
+          placeholder="A sentence you may want to return to..."
+          aria-label="Private reflection note"
+        />
+        <div>
+          <span>{draft.length} / 400</span>
+          <button
+            className="button button-outline button-small"
+            disabled={draft.trim() === note.trim()}
+            onClick={() => {
+              onSaveNote(draft);
+              setSaved(true);
+            }}
+          >
+            {saved ? (
+              <>
+                <Check size={14} /> Saved privately
+              </>
+            ) : note ? (
+              'Update private note'
+            ) : (
+              'Save private note'
+            )}
+          </button>
+        </div>
+      </section>
+
       {/* Community Contribution Box */}
       <div className="community-share-card">
         <div className="community-share-header">
@@ -190,7 +259,7 @@ export function ReflectionPanel({
         <Check size={13} />
         <span>
           {storageAvailable
-            ? 'Reflection saved on this device. Only for you.'
+            ? 'Reflection and note stay on this device. Only for you.'
             : 'Reflection saved for this visit. Browser storage is unavailable.'}
         </span>
       </div>
@@ -200,7 +269,7 @@ export function ReflectionPanel({
           View my journey <ArrowUpRight size={16} />
         </button>
         <button className="button button-dark" onClick={onNext}>
-          Explore another situation <ArrowRight size={16} />
+          {nextLabel ?? 'Explore another situation'} <ArrowRight size={16} />
         </button>
       </div>
     </section>

@@ -49,4 +49,13 @@ export interface JourneyState {
   session: Session | null;
   completedScenarios: JourneyEntry[];
   savedScenarios: string[];
+  reflectionNotes: Record<string, string>;
+  activePath: GuidedPath | null;
+}
+
+export interface GuidedPath {
+  scenarioIds: string[];
+  currentIndex: number;
+  categories: Category[];
+  createdAt: string;
 }

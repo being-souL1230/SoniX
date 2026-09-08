@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ArrowRight, Bookmark, Search, Shuffle, X } from 'lucide-react';
+import { ArrowRight, Bookmark, Route, Search, Shuffle, X } from 'lucide-react';
 import { categories, scenarios } from '../data/scenarios';
 import { CategoryIcon } from '../components/Brand';
 import { Reveal } from '../components/Reveal';
@@ -12,9 +12,10 @@ interface ExploreProps {
   savedScenarios: string[];
   onStart: (id: string) => void;
   onToggleSave: (id: string) => void;
+  onBuildPath: () => void;
 }
 
-export default function Explore({ initialCategory, completed, savedScenarios, onStart, onToggleSave }: ExploreProps) {
+export default function Explore({ initialCategory, completed, savedScenarios, onStart, onToggleSave, onBuildPath }: ExploreProps) {
   const [category, setCategory] = useState<Category | 'All'>(initialCategory);
   const [search, setSearch] = useState('');
   const [visibleCount, setVisibleCount] = useState(8);
@@ -39,7 +40,14 @@ export default function Explore({ initialCategory, completed, savedScenarios, on
             <h1>Life is full of<br /><span className="text-sage">little crossroads.</span></h1>
             <p>Find a question that feels familiar. Leave with a perspective that does not.</p>
           </div>
-          <button className="button button-outline" onClick={surpriseMe}><Shuffle size={17} /> Surprise me</button>
+          <div className="explore-heading-actions">
+            <button className="button button-outline" onClick={onBuildPath}>
+              <Route size={17} /> Build an odyssey
+            </button>
+            <button className="button button-outline" onClick={surpriseMe}>
+              <Shuffle size={17} /> Surprise me
+            </button>
+          </div>
         </Reveal>
 
         <div className="explore-filters" aria-label="Filter situations by topic">

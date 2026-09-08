@@ -1,12 +1,25 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, GitCompareArrows, X } from 'lucide-react';
 import { optionIds, type OptionId, type Perspective } from '../types/social';
 import { PerspectiveCard } from './PerspectiveCard';
 
-export function PerspectiveCollection({ responses, viewed, selected, onOpen }: { responses: Perspective[]; viewed: string[]; selected: OptionId; onOpen: (response: Perspective) => void }) {
+export function PerspectiveCollection({
+  responses,
+  viewed,
+  selected,
+  onOpen,
+  onCompare,
+}: {
+  responses: Perspective[];
+  viewed: string[];
+  selected: OptionId;
+  onOpen: (response: Perspective) => void;
+  onCompare: (responses: [Perspective, Perspective]) => void;
+}) {
   const collection = useRef<HTMLDivElement>(null);
   const [edges, setEdges] = useState({ start: true, end: false });
   const [filter, setFilter] = useState<'All' | OptionId>('All');
+  const [compareIds, setCompareIds] = useState<string[]>([]);
   const filteredResponses = filter === 'All' ? responses : responses.filter((response) => response.selectedOption === filter);
 
   const updateEdges = () => {
@@ -34,6 +47,8 @@ export function PerspectiveCollection({ responses, viewed, selected, onOpen }: {
     collection.current?.scrollBy({ left: (width + 18) * direction, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   };
 
+  const toggleCompare = (id: string) => setCompareIds((current) => current.includes(id) ? current.filter((item) => item !== id) : current.length < 2 ? [...current, id] : current);
+
   return (
     <>
       <div className="perspective-filter">
@@ -48,8 +63,31 @@ export function PerspectiveCollection({ responses, viewed, selected, onOpen }: {
         </div>
       </div>
       <div className={`perspective-grid ${filter !== 'All' ? 'is-filtered' : ''}`} ref={collection} onScroll={updateEdges} aria-label={`${filter === 'All' ? 'All' : `Option ${filter}`} curated anonymous perspectives`}>
-        {filteredResponses.map((response, index) => <PerspectiveCard key={response.id} response={response} index={index} viewed={viewed.includes(response.id)} onOpen={() => onOpen(response)} />)}
+        {filteredResponses.map((response, index) => (
+          <PerspectiveCard
+            key={response.id}
+            response={response}
+            index={index}
+            viewed={viewed.includes(response.id)}
+            onOpen={() => onOpen(response)}
+            onToggleCompare={() => toggleCompare(response.id)}
+            selectedForCompare={compareIds.includes(response.id)}
+            compareDisabled={compareIds.length === 2}
+          />
+        ))}
       </div>
+      {compareIds.length > 0 && (
+        <div className="compare-dock" role="status">
+          <div><GitCompareArrows size={17} /><span>{compareIds.length === 1 ? 'Choose one more perspective.' : 'Two different lenses are ready.'}</span></div>
+          <div>
+            <button className="text-button" onClick={() => setCompareIds([])}><X size={13} /> Clear</button>
+            <button className="button button-dark button-small" disabled={compareIds.length !== 2} onClick={() => {
+              const pair = compareIds.map((id) => responses.find((response) => response.id === id)).filter(Boolean) as Perspective[];
+              if (pair.length === 2) onCompare(pair as [Perspective, Perspective]);
+            }}>Compare this pair <ArrowRight size={15} /></button>
+          </div>
+        </div>
+      )}
       <div className="perspective-mobile-controls">
         <span>{filter === 'All' ? 'Swipe to explore another angle.' : `${filteredResponses.length} perspectives chose ${filter}.`}</span>
         <div>

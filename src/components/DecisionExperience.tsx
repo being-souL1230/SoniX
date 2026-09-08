@@ -10,6 +10,7 @@ import { ChoiceList } from './ChoiceList';
 import { ComparisonView } from './ComparisonView';
 import { PerspectiveCollection } from './PerspectiveCollection';
 import { PerspectiveDetail } from './PerspectiveDetail';
+import { PerspectivePair } from './PerspectivePair';
 import { ProgressIndicator } from './ProgressIndicator';
 import { ReconsiderPanel } from './ReconsiderPanel';
 import { ReflectionPanel } from './ReflectionPanel';
@@ -17,6 +18,7 @@ import { ScenarioCard } from './ScenarioCard';
 
 export default function DecisionExperience({ journey, onJourney }: { journey: Journey; onJourney: () => void }) {
   const [detailId, setDetailId] = useState<string | null>(null);
+  const [comparisonPair, setComparisonPair] = useState<[Perspective, Perspective] | null>(null);
   const [communityResponses, setCommunityResponses] = useState<Perspective[]>([]);
   const root = useRef<HTMLDivElement>(null);
   const session = journey.session;
@@ -71,6 +73,16 @@ export default function DecisionExperience({ journey, onJourney }: { journey: Jo
 
   const chooseNext = () => {
     setDetailId(null);
+    setComparisonPair(null);
+    if (journey.activePath) {
+      if (journey.activePath.currentIndex < journey.activePath.scenarioIds.length - 1) {
+        journey.advancePath();
+      } else {
+        journey.finishPath();
+        onJourney();
+      }
+      return;
+    }
     const next = findNextScenario(
       scenarios,
       journey.completedScenarios.map((entry) => entry.scenarioId),
@@ -81,12 +93,28 @@ export default function DecisionExperience({ journey, onJourney }: { journey: Jo
 
   const reconsider = () => {
     setDetailId(null);
+    setComparisonPair(null);
     journey.reconsider();
   };
 
   return (
     <div className="decision-experience" ref={root}>
       <ProgressIndicator stage={session.stage} />
+      {journey.activePath && (
+        <div
+          className="odyssey-progress"
+          aria-label={`Odyssey situation ${journey.activePath.currentIndex + 1} of ${journey.activePath.scenarioIds.length}`}
+        >
+          <span>Perspective odyssey</span>
+          <div>
+            {journey.activePath.scenarioIds.map((id, index) => (
+              <span key={id} className={index <= journey.activePath!.currentIndex ? 'is-reached' : ''}>
+                {index + 1}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
       <motion.div
         key={`${scenario.id}-${session.stage}-${detail?.id ?? ''}`}
         initial={{ opacity: 0, y: 10 }}
@@ -135,7 +163,7 @@ export default function DecisionExperience({ journey, onJourney }: { journey: Jo
           </section>
         )}
 
-        {session.stage === 'perspectives' && !detail && session.selectedOption && (
+        {session.stage === 'perspectives' && !detail && !comparisonPair && session.selectedOption && (
           <section>
             <div className="flow-heading">
               <p className="eyebrow">The same situation. A different story.</p>
@@ -155,6 +183,10 @@ export default function DecisionExperience({ journey, onJourney }: { journey: Jo
               responses={allResponses}
               viewed={session.viewedResponses}
               selected={session.selectedOption}
+              onCompare={(pair) => {
+                pair.forEach((response) => journey.viewResponse(response.id));
+                setComparisonPair(pair);
+              }}
               onOpen={(response) => {
                 journey.viewResponse(response.id);
                 setDetailId(response.id);
@@ -182,6 +214,15 @@ export default function DecisionExperience({ journey, onJourney }: { journey: Jo
             onReconsider={reconsider}
           />
         )}
+        {session.stage === 'perspectives' && comparisonPair && session.selectedOption && (
+          <PerspectivePair
+            pair={comparisonPair}
+            scenario={scenario}
+            selected={session.selectedOption}
+            onBack={() => setComparisonPair(null)}
+            onReconsider={reconsider}
+          />
+        )}
         {session.stage === 'reconsider' && session.selectedOption && (
           <ReconsiderPanel
             scenario={scenario}
@@ -195,6 +236,15 @@ export default function DecisionExperience({ journey, onJourney }: { journey: Jo
             scenario={scenario}
             session={session}
             storageAvailable={journey.storageAvailable}
+            note={journey.reflectionNotes[scenario.id] ?? ''}
+            onSaveNote={(note) => journey.saveReflectionNote(scenario.id, note)}
+            nextLabel={
+              journey.activePath
+                ? journey.activePath.currentIndex < 2
+                  ? 'Continue my odyssey'
+                  : 'Complete my odyssey'
+                : undefined
+            }
             onNext={chooseNext}
             onJourney={onJourney}
           />

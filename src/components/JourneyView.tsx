@@ -75,6 +75,7 @@ export function JourneyView({ journey, onStart, onResume, onReflection }: Journe
                   <span className="eyebrow">{scenario.category} <span className="entry-date">/ {new Date(entry.completedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span></span>
                   <strong>{scenario.title}</strong>
                   <small>{entry.current === 'unsure' ? 'Still open to another angle' : changed ? 'A new perspective changed your choice' : 'Your choice stayed; your context grew'}</small>
+                  {journey.reflectionNotes[scenario.id] && <em>&ldquo;{journey.reflectionNotes[scenario.id]}&rdquo;</em>}
                 </span>
                 <span className="journey-mini-reflection" aria-label={`Original choice ${entry.original}, current choice ${entry.current}`}><span>{entry.original}</span><ArrowRight size={15} /><span className="journey-current">{entry.current === 'unsure' ? '?' : entry.current}</span></span>
                 <ArrowUpRight size={19} />

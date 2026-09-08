@@ -5,13 +5,14 @@ import { AboutView, PrivacyView, ReflectionNote } from './components/Information
 import { JourneyView } from './components/JourneyView';
 import { Modal } from './components/Modal';
 import { Navigation } from './components/Navigation';
+import { OdysseyBuilder } from './components/OdysseyBuilder';
 import { useJourney } from './hooks/useJourney';
 import Explore from './pages/Explore';
 import Landing from './pages/Landing';
 import type { Category } from './types/social';
 
 const DecisionExperience = lazy(() => import('./components/DecisionExperience'));
-type Overlay = 'decision' | 'journey' | 'about' | 'privacy' | 'note' | null;
+type Overlay = 'decision' | 'journey' | 'odyssey' | 'about' | 'privacy' | 'note' | null;
 type Destination = 'discover' | 'explore' | 'how-it-works';
 
 function scrollToDestination(destination: Destination, focus = false) {
@@ -57,7 +58,14 @@ export default function App() {
   };
   const start = (scenarioId?: string) => { journey.start(scenarioId); setOverlay('decision'); };
   const openReflection = (scenarioId: string) => { journey.openReflection(scenarioId); setOverlay('decision'); };
-  const modalTitles = { decision: 'A little room to think', journey: 'My journey', about: 'The idea behind SoniX', privacy: 'Your space. Your data.', note: 'A little more perspective' };
+  const modalTitles = {
+    decision: 'A little room to think',
+    journey: 'My journey',
+    odyssey: 'A path through perspective',
+    about: 'The idea behind SoniX',
+    privacy: 'Your space. Your data.',
+    note: 'A little more perspective',
+  };
 
   return (
     <MotionConfig reducedMotion="user" transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}>
@@ -78,7 +86,15 @@ export default function App() {
           onNote={(index) => { setNoteIndex(index); setOverlay('note'); }}
         />
       ) : (
-        <Explore key={exploreKey} initialCategory={exploreCategory} completed={journey.completedScenarios} savedScenarios={journey.savedScenarios} onToggleSave={journey.toggleSaved} onStart={start} />
+        <Explore
+          key={exploreKey}
+          initialCategory={exploreCategory}
+          completed={journey.completedScenarios}
+          savedScenarios={journey.savedScenarios}
+          onToggleSave={journey.toggleSaved}
+          onBuildPath={() => setOverlay('odyssey')}
+          onStart={start}
+        />
       )}
       <Footer onNavigate={navigate} onJourney={() => setOverlay('journey')} onAbout={() => setOverlay('about')} onPrivacy={() => setOverlay('privacy')} />
 
@@ -90,7 +106,15 @@ export default function App() {
                 <DecisionExperience journey={journey} onJourney={() => setOverlay('journey')} />
               </Suspense>
             )}
-            {overlay === 'journey' && <JourneyView journey={journey} onStart={() => start()} onResume={() => setOverlay('decision')} onReflection={openReflection} />}
+            {overlay === 'journey' && <JourneyView journey={journey} onStart={start} onResume={() => setOverlay('decision')} onReflection={openReflection} />}
+            {overlay === 'odyssey' && (
+              <OdysseyBuilder
+                onCreate={(selectedCategories) => {
+                  journey.createPath(selectedCategories);
+                  setOverlay('decision');
+                }}
+              />
+            )}
             {overlay === 'about' && <AboutView onStart={() => start()} />}
             {overlay === 'privacy' && <PrivacyView storageAvailable={journey.storageAvailable} onJourney={() => setOverlay('journey')} />}
             {overlay === 'note' && <ReflectionNote index={noteIndex} onStart={() => start()} />}
