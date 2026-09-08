@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { AnimatePresence, MotionConfig } from 'framer-motion';
 import { Footer } from './components/Footer';
+import { GuidedTour } from './components/GuidedTour';
 import { AboutView, PrivacyView, ReflectionNote } from './components/InformationViews';
 import { JourneyView } from './components/JourneyView';
 import { Modal } from './components/Modal';
@@ -36,6 +37,22 @@ export default function App() {
   const [exploreKey, setExploreKey] = useState(0);
   const [overlay, setOverlay] = useState<Overlay>(null);
   const [noteIndex, setNoteIndex] = useState(0);
+  const [tourOpen, setTourOpen] = useState(false);
+
+  useEffect(() => {
+    // Check if first-time visitor to launch clean intro tour
+    try {
+      const tourSeen = localStorage.getItem('sonix_tour_seen_v1');
+      if (!tourSeen) {
+        const timer = setTimeout(() => {
+          setTourOpen(true);
+        }, 1200);
+        return () => clearTimeout(timer);
+      }
+    } catch {
+      // Storage unavailable
+    }
+  }, []);
 
   useEffect(() => {
     const syncRoute = () => {
@@ -85,6 +102,7 @@ export default function App() {
         onStart={() => start()}
         onJourney={() => setOverlay('journey')}
         onAsk={() => setOverlay('ask')}
+        onTour={() => setTourOpen(true)}
       />
       {page === 'discover' ? (
         <Landing
@@ -106,6 +124,18 @@ export default function App() {
         />
       )}
       <Footer onNavigate={navigate} onJourney={() => setOverlay('journey')} onAbout={() => setOverlay('about')} onPrivacy={() => setOverlay('privacy')} />
+
+      <GuidedTour
+        isOpen={tourOpen}
+        onClose={() => setTourOpen(false)}
+        isModalOpen={overlay !== null}
+        currentPage={page}
+        onNavigatePage={(dest) => navigate(dest)}
+        onStartExperience={() => start()}
+        onNavigateToExplore={() => navigate('explore')}
+        onOpenAskModal={() => setOverlay('ask')}
+        onOpenJourney={() => setOverlay('journey')}
+      />
 
       <AnimatePresence mode="wait">
         {overlay && (

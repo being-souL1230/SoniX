@@ -95,16 +95,16 @@ export default function Explore({
                 <MessageSquarePlus size={17} /> Ask a question
               </button>
             )}
-            <button className="button button-outline" onClick={onBuildPath}>
+            <button className="button button-outline" data-tour="explore-odyssey" onClick={onBuildPath}>
               <Route size={17} /> Build an odyssey
             </button>
-            <button className="button button-outline" onClick={surpriseMe}>
+            <button className="button button-outline" data-tour="explore-surprise" onClick={surpriseMe}>
               <Shuffle size={17} /> Surprise me
             </button>
           </div>
         </Reveal>
 
-        <div className="explore-filters" aria-label="Filter situations by topic">
+        <div className="explore-filters" data-tour="explore-filters" aria-label="Filter situations by topic">
           <div className="filter-orbits">
             {(['All', ...categories] as const).map((item) => (
               <button className={`category-filter ${category === item ? 'is-active' : ''}`} key={item} onClick={() => selectCategory(item)} aria-pressed={category === item}>
