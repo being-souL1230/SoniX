@@ -39,7 +39,7 @@ export function PrivacyView({ storageAvailable, onJourney }: { storageAvailable:
       <p>Your personal blind choices, reconsidered votes, saved dilemma bookmarks, and private reflection notes are stored locally in your browser (<code>localStorage</code>). SoniX never tracks your personal voting history on our servers, and no analytics service monitors your choices.</p>
 
       <h3>2. What connects to the cloud (Supabase Database)</h3>
-      <p>When you participate in community features — such as <strong>posting a dilemma</strong> or <strong>sharing an anonymous perspective</strong> — your submission is stored in our Supabase cloud database so other thinkers can discover it. These submissions are completely anonymous and never linked to personal identifiers or IP tracking.</p>
+      <p>When you participate in community features (such as <strong>posting a dilemma</strong> or <strong>sharing an anonymous perspective</strong>), your submission is stored in our Supabase cloud database so other thinkers can discover it. These submissions are completely anonymous and never linked to personal identifiers or IP tracking.</p>
 
       <h3>3. Real-Time Community Sync</h3>
       <p>The platform combines 73 foundational curated dilemmas with real-time community dilemmas and perspectives fetched from Supabase, featuring instant fallback to local storage if offline.</p>

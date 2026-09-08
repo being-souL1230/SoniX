@@ -35,7 +35,7 @@ const TOUR_STEPS: TourStep[] = [
     badge: 'Step 1 of 5 • Blind Choice',
     title: 'Make Your Blind First Choice',
     description:
-      'Every interaction begins with a real crossroads. You pick your stance before seeing what anyone else chose — keeping your first instinct completely uninfluenced.',
+      'Every interaction begins with a real crossroads. You pick your stance before seeing what anyone else chose, keeping your first instinct completely uninfluenced.',
     icon: <Eye size={18} className="text-[#365744]" />,
     actionPrompt: 'Look at the highlighted button above! Click it to start immediately, or hit Next.',
   },
@@ -46,7 +46,7 @@ const TOUR_STEPS: TourStep[] = [
     badge: 'Step 2 of 5 • Live Explore',
     title: 'Filter Across 8 Life Realms',
     description:
-      'Browse real dilemmas across Career, Ethics, Relationships, Money, and more. Try clicking any category tag above — the page updates in real-time!',
+      'Browse real dilemmas across Career, Ethics, Relationships, Money, and more. Try clicking any category tag above; the page updates in real-time!',
     icon: <Layers size={18} className="text-[#365744]" />,
     actionPrompt: 'Interact live with the category filters above, then click Next.',
     offsetY: -8,
@@ -68,7 +68,7 @@ const TOUR_STEPS: TourStep[] = [
     badge: 'Step 4 of 5 • Community Dilemmas',
     title: 'Ask Real Dilemmas Anonymously',
     description:
-      'Pose your own crossroads with 4 distinct options. Other thinkers will respond with their authentic reasoning — zero profiles, zero follower counts.',
+      'Pose your own crossroads with 4 distinct options. Other thinkers will respond with their authentic reasoning, with zero profiles and zero follower counts.',
     icon: <MessageSquarePlus size={18} className="text-[#365744]" />,
     actionPrompt: 'Click "Ask a question" in the top bar to draft your own question.',
   },
