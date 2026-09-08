@@ -15,11 +15,12 @@ Instead of doomscrolling through profiles or algorithms, a visitor encounters a 
 ## What Makes SoniX Different
 
 1. **Anonymous Perspectives, Not Influencers**: Every opinion is grounded in personal reasoning, not usernames, follower counts, or vanity metrics.
-2. **Curated Odyssey**: Select up to 3 life realms to embark on a guided 3-situation reflective path. Tracks progress (1-2-3), avoids completed scenarios, and persists across browser refreshes.
-3. **Perspective Pair Comparison**: Select any two anonymous perspectives to compare side-by-side in a circular composition—without popularity contests or ranking scores.
-4. **Private Reflection Notes**: Record personal 400-character notes alongside completed decisions. Editable, reviewable in *My Journey*, and kept strictly in browser `localStorage`.
-5. **Community Dilemmas & Live Perspectives**: Thinkers can author their own dilemmas with 4 distinct options and contribute perspectives in real-time, supported by Supabase with seamless local-first offline fallback.
-6. **No Infinite Feeds or Ads**: Free access, no mandatory signup or credit card requirements, and zero dark patterns.
+2. **Interactive Guided Tour**: A non-blocking, real-time onboarding HUD dock that spotlights core platform elements and auto-navigates pages without obscuring the interface.
+3. **Curated Odyssey**: Select up to 3 life realms to embark on a guided 3-situation reflective path. Tracks progress (1-2-3), avoids completed scenarios, and persists across browser refreshes.
+4. **Perspective Pair Comparison**: Select any two anonymous perspectives to compare side-by-side in a circular composition—without popularity contests or ranking scores.
+5. **Private Reflection Notes**: Record personal 400-character notes alongside completed decisions. Editable, reviewable in *My Journey*, and kept strictly in browser `localStorage`.
+6. **Community Dilemmas & Live Perspectives**: Thinkers can author their own dilemmas with 4 distinct options and contribute perspectives in real-time, supported by Supabase with seamless local-first offline fallback.
+7. **No Infinite Feeds or Ads**: Free access, no mandatory signup or credit card requirements, and zero dark patterns.
 
 ---
 
@@ -68,44 +69,47 @@ SoniX is built **local-first**:
 
 ## Product Experience
 
-### 1. Discover
+### 1. Interactive Guided Tour
+A real-time, non-blocking floating tour dock that introduces first-time visitors to the core philosophy of SoniX. Features dynamic element spotlight rings, auto-synchronization between Discover and Explore pages, "Try it now" pausing for live experimentation, and keyboard navigation (Escape to skip, arrow keys to step). Accessible anytime from the desktop and mobile navigation.
+
+### 2. Discover
 An editorial landing experience featuring sticky navigation, original circular branding artwork, interactive how-it-works steps, a featured dilemma, curated realm discovery, benefit accordions, and native FAQ disclosures.
 
-### 2. Choose
+### 3. Choose
 A clean circular presentation of a situation, category, background context, and four distinct choices. The reveal action remains disabled until a choice is selected. Radio-style controls support arrow keys, Home, End, Space, and Enter.
 
-### 3. Reveal and Explore
+### 4. Reveal and Explore
 Reveals a proportional choice distribution and anonymous perspective circles. Opening any perspective reveals full contextual reasoning, identity tag, and a direct relationship comparison with the visitor's choice. Explored perspectives are marked without vanity scores.
 
-### 4. Perspective Pair
+### 5. Perspective Pair
 Enables side-by-side comparison of any two viewpoints in an unclipped circular layout, highlighting nuanced contrasts without ranking them.
 
-### 5. Reconsider
+### 6. Reconsider
 The visitor can reaffirm their original answer ("Keep"), embrace a new viewpoint ("Change"), or remain thoughtfully "Unsure". Changing requires selecting a new option.
 
-### 6. Reflect & Private Notes
+### 7. Reflect & Private Notes
 Before and after appear as linked circular states. Users can jot down private 400-character reflection notes saved exclusively to local storage.
 
-### 7. Curated Odyssey
+### 8. Curated Odyssey
 A guided 3-stage journey tailored to chosen life realms (Career, Ethics, Relationships, College, etc.), guiding the user through successive dilemmas.
 
-### 8. Explore Catalog & Community Questions
-Browse dozens of situations across eight categories. Includes category filtering, real-time search, "Surprise me" randomizer, and the **"Post a Question"** modal for community dilemmas.
+### 9. Explore Catalog & Community Questions
+Browse **74 curated dilemmas** across eight categories plus live community-submitted questions. Includes category filtering, real-time search, "Surprise me" randomizer, bookmarking, and the **"Ask a question"** modal for community dilemmas.
 
-### 9. My Journey
+### 10. My Journey
 Resume unfinished situations, revisit completed reflections with personal notes, or reset the journey with confirmation.
 
 ---
 
 ## Content & Realms
 
-Situations span eight primary realms of life:
+Situations span eight primary realms of life across **74 curated dilemmas** (20 foundational seeds + 54 expanded situations) and **592 distinct perspectives**:
 - **Life** & **Everyday**
 - **Friendship** & **Relationships**
 - **Career** & **College**
 - **Ethics** & **Money**
 
-Each dilemma features 4 distinct options (A, B, C, D) and thoughtfully authored perspectives with diverse thinking styles (analytical, cautious, empathetic, bold).
+Each dilemma features 4 distinct options (A, B, C, D) and 8 thoughtfully authored perspectives representing distinct thinking archetypes (*The Quiet Optimist*, *The Grounded Realist*, *The Boundary Keeper*, etc.). Community members can expand this catalog with live questions.
 
 ---
 
@@ -116,10 +120,13 @@ src/
   App.tsx                         Application shell, hash-based routing, navigation overlays
   main.tsx                        React 19 entry point
   index.css                       Tailwind CSS v4, design tokens, responsive typography
+  pages/
+    Landing.tsx                   Editorial landing page with hero, realm selector, and FAQ
+    Explore.tsx                   Catalog with 74 situations, search, filter tags, and community questions
   types/social.ts                 Core domain types (Scenario, Perspective, Journey, Session)
   data/
-    scenarios.ts                  20 core foundational scenarios & curated perspectives
-    additionalScenarios.ts        Expanded catalog of life dilemmas
+    scenarios.ts                  20 core foundational scenarios, registry, and helpers
+    additionalScenarios.ts        54 expanded catalog dilemmas (total 74 curated scenarios)
     content.ts                    Landing editorial copy, FAQ, and steps
   hooks/
     useJourney.ts                 State machine transitions, persistence, odyssey & note management
@@ -137,7 +144,8 @@ src/
       content-integrity.test.ts   Automated validation for all scenarios, choices, and perspectives
   components/
     Brand.tsx                     SVG brand marks, category badges, anonymous avatars
-    Navigation.tsx                Sticky desktop & mobile navigation with quick actions
+    Navigation.tsx                Sticky desktop & mobile navigation with quick actions & tour trigger
+    GuidedTour.tsx                Real-time interactive onboarding tour with floating HUD & spotlights
     Footer.tsx                    Navigation, privacy, and project disclosure
     Modal.tsx                     Accessible dialog with focus trap, Escape, and scroll locking
     Reveal.tsx                    Reduced-motion-safe animations
@@ -159,6 +167,7 @@ src/
 public/
   images/Hero Section.png         Hero section illustration & previews
   images/perspective-world.webp   High-efficiency WebP perspective world artwork
+  images/perspective-world-trans.webp High-efficiency transparent WebP world artwork
   images/sonix-*.webp             Step & connection illustrations in WebP format
   sonix-mark.svg                  Vector brand favicon
 docs/
