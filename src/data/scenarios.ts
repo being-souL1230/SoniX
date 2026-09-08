@@ -1,5 +1,6 @@
 import { optionIds, type Category, type OptionId, type Scenario } from '../types/social';
 import { additionalScenarios } from './additionalScenarios';
+import { getLocalCommunityScenarios } from '../lib/supabase';
 
 export const categories: Category[] = ['Life', 'Friendship', 'Career', 'College', 'Ethics', 'Money', 'Relationships', 'Everyday'];
 
@@ -316,4 +317,22 @@ const originalScenarios: Scenario[] = seeds.map((seed, scenarioIndex) => {
 
 export const scenarios: Scenario[] = [...originalScenarios, ...additionalScenarios];
 
-export const getScenario = (id: string) => scenarios.find((scenario) => scenario.id === id);
+let communityRegistry: Scenario[] = typeof window !== 'undefined' ? getLocalCommunityScenarios() : [];
+
+export function setCommunityScenariosRegistry(list: Scenario[]) {
+  communityRegistry = list;
+}
+
+export function registerCommunityScenario(scenario: Scenario) {
+  if (!communityRegistry.some((s) => s.id === scenario.id)) {
+    communityRegistry = [scenario, ...communityRegistry];
+  }
+}
+
+export function getCommunityRegistry(): Scenario[] {
+  return communityRegistry;
+}
+
+export const getScenario = (id: string): Scenario | undefined =>
+  scenarios.find((scenario) => scenario.id === id) ||
+  communityRegistry.find((scenario) => scenario.id === id);

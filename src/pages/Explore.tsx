@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react';
-import { ArrowRight, Bookmark, Route, Search, Shuffle, X } from 'lucide-react';
-import { categories, scenarios } from '../data/scenarios';
+import { useEffect, useMemo, useState } from 'react';
+import { ArrowRight, Bookmark, MessageSquarePlus, Route, Search, Shuffle, Users, X } from 'lucide-react';
+import { categories, scenarios, getCommunityRegistry, setCommunityScenariosRegistry, registerCommunityScenario } from '../data/scenarios';
 import { CategoryIcon } from '../components/Brand';
 import { Reveal } from '../components/Reveal';
 import { ScenarioCard } from '../components/ScenarioCard';
-import type { Category, JourneyEntry } from '../types/social';
+import { fetchCommunityScenarios, subscribeToCommunityScenarios } from '../lib/supabase';
+import type { Category, JourneyEntry, Scenario } from '../types/social';
 
 interface ExploreProps {
   initialCategory: Category | 'All';
@@ -13,21 +14,69 @@ interface ExploreProps {
   onStart: (id: string) => void;
   onToggleSave: (id: string) => void;
   onBuildPath: () => void;
+  onAsk?: () => void;
 }
 
-export default function Explore({ initialCategory, completed, savedScenarios, onStart, onToggleSave, onBuildPath }: ExploreProps) {
+export default function Explore({
+  initialCategory,
+  completed,
+  savedScenarios,
+  onStart,
+  onToggleSave,
+  onBuildPath,
+  onAsk,
+}: ExploreProps) {
   const [category, setCategory] = useState<Category | 'All'>(initialCategory);
   const [search, setSearch] = useState('');
   const [visibleCount, setVisibleCount] = useState(8);
   const [savedOnly, setSavedOnly] = useState(false);
-  const filtered = useMemo(() => scenarios.filter((scenario) =>
+  const [communityOnly, setCommunityOnly] = useState(false);
+  const [communityScenarios, setCommunityScenarios] = useState<Scenario[]>(getCommunityRegistry);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchCommunityScenarios().then((list) => {
+      if (isMounted) {
+        setCommunityScenarios(list);
+        setCommunityScenariosRegistry(list);
+      }
+    });
+
+    const unsubscribe = subscribeToCommunityScenarios((newScenario) => {
+      registerCommunityScenario(newScenario);
+      setCommunityScenarios((prev) => {
+        if (prev.some((s) => s.id === newScenario.id)) return prev;
+        return [newScenario, ...prev];
+      });
+    });
+
+    return () => {
+      isMounted = false;
+      unsubscribe();
+    };
+  }, []);
+
+  const allScenarios = useMemo(() => {
+    const combined = [...communityScenarios];
+    for (const s of scenarios) {
+      if (!combined.some((item) => item.id === s.id)) {
+        combined.push(s);
+      }
+    }
+    return combined;
+  }, [communityScenarios]);
+
+  const filtered = useMemo(() => allScenarios.filter((scenario) =>
     (category === 'All' || scenario.category === category) &&
     (!savedOnly || savedScenarios.includes(scenario.id)) &&
-    `${scenario.title} ${scenario.description} ${scenario.category}`.toLowerCase().includes(search.trim().toLowerCase()),
-  ), [category, savedOnly, savedScenarios, search]);
+    (!communityOnly || scenario.isCommunity) &&
+    `${scenario.title} ${scenario.description} ${scenario.category} ${scenario.isCommunity ? 'community question user' : ''}`.toLowerCase().includes(search.trim().toLowerCase()),
+  ), [allScenarios, category, savedOnly, savedScenarios, communityOnly, search]);
+
   const selectCategory = (next: Category | 'All') => { setCategory(next); setVisibleCount(8); };
+
   const surpriseMe = () => {
-    const pool = filtered.length ? filtered : scenarios;
+    const pool = filtered.length ? filtered : allScenarios;
     onStart(pool[Math.floor(Math.random() * pool.length)].id);
   };
 
@@ -41,6 +90,11 @@ export default function Explore({ initialCategory, completed, savedScenarios, on
             <p>Find a question that feels familiar. Leave with a perspective that does not.</p>
           </div>
           <div className="explore-heading-actions">
+            {onAsk && (
+              <button className="button button-dark" onClick={onAsk}>
+                <MessageSquarePlus size={17} /> Ask a question
+              </button>
+            )}
             <button className="button button-outline" onClick={onBuildPath}>
               <Route size={17} /> Build an odyssey
             </button>
@@ -74,6 +128,15 @@ export default function Explore({ initialCategory, completed, savedScenarios, on
         <div className="explore-toolbar">
           <p role="status">{filtered.length} {filtered.length === 1 ? 'situation' : 'situations'}. <span>Zero right answers.</span></p>
           <div className="explore-tools">
+            {communityScenarios.length > 0 && (
+              <button
+                className={`saved-filter-button ${communityOnly ? 'is-active' : ''}`}
+                onClick={() => { setCommunityOnly((val) => !val); setVisibleCount(8); }}
+                aria-pressed={communityOnly}
+              >
+                <Users size={15} /> Community questions <span>{communityScenarios.length}</span>
+              </button>
+            )}
             <button className={`saved-filter-button ${savedOnly ? 'is-active' : ''}`} onClick={() => { setSavedOnly((value) => !value); setVisibleCount(8); }} aria-pressed={savedOnly}>
               <Bookmark size={15} fill={savedOnly ? 'currentColor' : 'none'} /> Saved for later <span>{savedScenarios.length}</span>
             </button>
@@ -89,7 +152,15 @@ export default function Explore({ initialCategory, completed, savedScenarios, on
           <>
             <div className="scenario-grid">
               {filtered.slice(0, visibleCount).map((scenario) => (
-                <ScenarioCard key={scenario.id} scenario={scenario} compact completed={completed.some((entry) => entry.scenarioId === scenario.id)} saved={savedScenarios.includes(scenario.id)} onToggleSave={() => onToggleSave(scenario.id)} onOpen={() => onStart(scenario.id)} />
+                <ScenarioCard
+                  key={scenario.id}
+                  scenario={scenario}
+                  compact
+                  completed={completed.some((entry) => entry.scenarioId === scenario.id)}
+                  saved={savedScenarios.includes(scenario.id)}
+                  onToggleSave={() => onToggleSave(scenario.id)}
+                  onOpen={() => onStart(scenario.id)}
+                />
               ))}
             </div>
             {visibleCount < filtered.length && (
@@ -102,9 +173,15 @@ export default function Explore({ initialCategory, completed, savedScenarios, on
         ) : (
           <div className="search-empty">
             <Search size={35} strokeWidth={1.3} />
-            <h2>{savedOnly ? 'Nothing saved here. Yet.' : 'No situations here. Yet.'}</h2>
-            <p>{savedOnly ? 'Save any circular situation and it will wait here for a quieter moment.' : 'Try a different word or give another topic a little space.'}</p>
-            <button className="button button-dark" onClick={() => { setSearch(''); selectCategory('All'); setSavedOnly(false); }}>See every situation <ArrowRight size={16} /></button>
+            <h2>{savedOnly ? 'Nothing saved here. Yet.' : communityOnly ? 'No community questions here yet.' : 'No situations here. Yet.'}</h2>
+            <p>{savedOnly ? 'Save any circular situation and it will wait here for a quieter moment.' : communityOnly ? 'Be the first to post an anonymous question for others to reflect on.' : 'Try a different word or give another topic a little space.'}</p>
+            {communityOnly && onAsk ? (
+              <button className="button button-dark" onClick={onAsk}>
+                <MessageSquarePlus size={16} /> Post the first question
+              </button>
+            ) : (
+              <button className="button button-dark" onClick={() => { setSearch(''); selectCategory('All'); setSavedOnly(false); setCommunityOnly(false); }}>See every situation <ArrowRight size={16} /></button>
+            )}
           </div>
         )}
         <p className="explore-bottom-note">Real-life questions. Curated voices. A little more understanding.</p>

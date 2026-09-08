@@ -6,13 +6,14 @@ import { JourneyView } from './components/JourneyView';
 import { Modal } from './components/Modal';
 import { Navigation } from './components/Navigation';
 import { OdysseyBuilder } from './components/OdysseyBuilder';
+import { QuestionModal } from './components/QuestionModal';
 import { useJourney } from './hooks/useJourney';
 import Explore from './pages/Explore';
 import Landing from './pages/Landing';
 import type { Category } from './types/social';
 
 const DecisionExperience = lazy(() => import('./components/DecisionExperience'));
-type Overlay = 'decision' | 'journey' | 'odyssey' | 'about' | 'privacy' | 'note' | null;
+type Overlay = 'decision' | 'journey' | 'odyssey' | 'ask' | 'about' | 'privacy' | 'note' | null;
 type Destination = 'discover' | 'explore' | 'how-it-works';
 
 function scrollToDestination(destination: Destination, focus = false) {
@@ -62,6 +63,7 @@ export default function App() {
     decision: 'A little room to think',
     journey: 'My journey',
     odyssey: 'A path through perspective',
+    ask: 'Pose a crossroads to the community',
     about: 'The idea behind SoniX',
     privacy: 'Your space. Your data.',
     note: 'A little more perspective',
@@ -77,7 +79,13 @@ export default function App() {
         main?.scrollIntoView();
       }}>Skip to content</a>
 
-      <Navigation page={page} onNavigate={navigate} onStart={() => start()} onJourney={() => setOverlay('journey')} />
+      <Navigation
+        page={page}
+        onNavigate={navigate}
+        onStart={() => start()}
+        onJourney={() => setOverlay('journey')}
+        onAsk={() => setOverlay('ask')}
+      />
       {page === 'discover' ? (
         <Landing
           onStart={start}
@@ -94,6 +102,7 @@ export default function App() {
           onToggleSave={journey.toggleSaved}
           onBuildPath={() => setOverlay('odyssey')}
           onStart={start}
+          onAsk={() => setOverlay('ask')}
         />
       )}
       <Footer onNavigate={navigate} onJourney={() => setOverlay('journey')} onAbout={() => setOverlay('about')} onPrivacy={() => setOverlay('privacy')} />
@@ -113,6 +122,14 @@ export default function App() {
                   journey.createPath(selectedCategories);
                   setOverlay('decision');
                 }}
+              />
+            )}
+            {overlay === 'ask' && (
+              <QuestionModal
+                onCreated={(newScenario) => {
+                  start(newScenario.id);
+                }}
+                onCancel={() => setOverlay(null)}
               />
             )}
             {overlay === 'about' && <AboutView onStart={() => start()} />}

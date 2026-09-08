@@ -26,6 +26,9 @@ export interface Scenario {
   options: Choice[];
   responses: Perspective[];
   insight: string;
+  isCommunity?: boolean;
+  authorLabel?: string;
+  createdAt?: string;
 }
 
 export interface Session {

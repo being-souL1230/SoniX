@@ -12,7 +12,23 @@ interface ScenarioCardProps {
 }
 
 export function ScenarioCard({ scenario, compact = false, onOpen, completed = false, saved = false, onToggleSave }: ScenarioCardProps) {
-  const content = <><span className="scenario-category"><CategoryIcon category={scenario.category} size={compact ? 22 : 26} /><span>{scenario.category}</span></span><h3>{scenario.title}</h3>{!compact && <p>{scenario.description}</p>}{onOpen && <span className="scenario-open">{completed ? 'Explore again' : 'What would you choose?'}<ArrowUpRight size={18} /></span>}</>;
+  const content = (
+    <>
+      <span className="scenario-category">
+        <CategoryIcon category={scenario.category} size={compact ? 22 : 26} />
+        <span>{scenario.category}</span>
+        {scenario.isCommunity && <span className="community-tag">Community</span>}
+      </span>
+      <h3>{scenario.title}</h3>
+      {!compact && <p>{scenario.description}</p>}
+      {onOpen && (
+        <span className="scenario-open">
+          {completed ? 'Explore again' : 'What would you choose?'}
+          <ArrowUpRight size={18} />
+        </span>
+      )}
+    </>
+  );
   if (!onOpen) return <div className={`scenario-orb ${compact ? 'scenario-orb-compact' : ''}`}>{content}</div>;
   return (
     <div className={`scenario-shell ${compact ? 'scenario-shell-compact' : ''}`}>
