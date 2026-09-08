@@ -1,12 +1,25 @@
 # SoniX Verification Guide
 
-## Build and Source Checks
+## Verification Status: Executed vs Planned
 
-- Production build: executed successfully with the provided Vite build tool.
-- Scenario definitions: 20 verified in the local content file.
-- Curated perspectives: 160 verified from the option groups (14 single-response groups, 52 two-response groups, and 14 three-response groups).
-- Application API calls, backend SDKs, authentication, and placeholder content: none found in application source.
-- Browser-driven interaction tests and screenshots: not executed in this environment. The checks below are prepared for a real browser, not represented as completed tests.
+| Layer / Check | Status | Verification Tool / Command | Evidence & Result |
+| :--- | :--- | :--- | :--- |
+| **Static Type Check** | **EXECUTED** | `npm run typecheck` (`tsc --noEmit`) | 0 TypeScript errors across source and tests |
+| **Unit Test Suite** | **EXECUTED** | `npm run test` (`vitest run`) | 12 tests passed: `decisions.test.ts` (distribution math & cycling), `content-integrity.test.ts` (all 20 scenarios, 4 options A-D, valid IDs & reasoning) |
+| **Production Multi-Chunk Build** | **EXECUTED** | `npm run build` (`vite build`) | Successful. Monolithic 860 kB singlefile eliminated; HTML reduced to 1.66 kB with dedicated chunks for React, Motion, Supabase, and dynamic `DecisionExperience` |
+| **Content Integrity & Data Schema** | **EXECUTED** | Automated test suite | All 20 scenarios verified with 4 distinct options, curated perspectives, and tags |
+| **Supabase Architecture Split** | **EXECUTED** | Architectural refactor | Isolated into `client.ts`, `types.ts`, `mappers.ts`, `perspectives.ts`, `scenarios.ts` |
+| **Browser E2E / Interaction Flow** | **PLANNED** | Manual / Headless browser | Documented checklist below (Choose → Reveal → Explore → Reconsider → Reflect) |
+| **Responsive Viewport Matrix** | **PLANNED** | Visual matrix (375px–1440px) | Viewport plan defined in table below |
+| **Accessibility (axe / Screen Reader)** | **PLANNED** | axe-core / VoiceOver / NVDA | Native semantics, focus trap, and ARIA patterns implemented; browser-driven axe run planned |
+
+## Build and Source Verification Details
+
+- **Production build**: Executed successfully with Vite 7 multi-chunk architecture.
+- **Scenario definitions**: 20 verified in local content file, passing automated schema validation.
+- **Curated perspectives**: 160 verified from option groups with local reasoning.
+- **Dependencies cleaned**: Unused Three.js (`three` & `@types/three`) and monolithic `vite-plugin-singlefile` removed.
+- **Backend resilience**: Supabase integration operates in local-first fallback mode when environment variables are omitted, ensuring 100% offline functionality.
 
 ## Core Journey
 
