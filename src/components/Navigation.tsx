@@ -38,14 +38,14 @@ export function Navigation({ page, onNavigate, onStart, onJourney, onAsk, onTour
               <MessageSquarePlus size={14} /> Ask a question
             </button>
           )}
-          <button className="journey-link" data-tour="nav-journey" onClick={onJourney}>My journey <ArrowUpRight size={15} /></button>
-          <button className="button button-dark button-small nav-start-btn" onClick={onStart}>
+          <button className="journey-link hidden md:inline-flex" data-tour="nav-journey" onClick={onJourney}>My journey <ArrowUpRight size={15} /></button>
+          <button className="button button-dark button-small nav-start-btn shrink-0" onClick={onStart}>
             <span className="hidden sm:inline">Start exploring</span>
             <span className="sm:hidden">Explore</span>
             <ArrowRight size={15} />
           </button>
+          <button className="icon-button mobile-menu-toggle shrink-0" aria-expanded={mobileOpen} aria-controls="mobile-navigation" aria-label={mobileOpen ? 'Close menu' : 'Open menu'} onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X size={23} /> : <Menu size={23} />}</button>
         </div>
-        <button className="icon-button mobile-menu-toggle" aria-expanded={mobileOpen} aria-controls="mobile-navigation" aria-label={mobileOpen ? 'Close menu' : 'Open menu'} onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X size={23} /> : <Menu size={23} />}</button>
       </div>
       {mobileOpen && (
         <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation">

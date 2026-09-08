@@ -928,15 +928,15 @@ button.scenario-orb:hover { background: #f6f9eb; border-color: #8c9e7e; transfor
 
 @media (max-width: 560px) {
   html { scroll-padding-top: 87px; }
-  .container, .nav-wrap { width: calc(100% - 32px); }
+  .container, .nav-wrap { width: calc(100% - 28px); }
   .nav-wrap { height: 68px; gap: 8px; }
-  .brand { font-size: 24px; gap: 4px; letter-spacing: -1.2px; }
+  .brand { font-size: 24px; gap: 4px; letter-spacing: -1.2px; flex-shrink: 0; }
   .brand svg { width: 26px; height: 26px; }
-  .nav-actions { margin-left: auto; gap: 8px; }
+  .nav-actions { margin-left: auto; gap: 8px; flex-shrink: 0; }
   .nav-actions .journey-link { display: none; }
-  .nav-actions > .button { min-height: 36px; padding: 8px 14px; font-size: 11px; gap: 8px; }
+  .nav-actions > .button { min-height: 36px; padding: 8px 14px; font-size: 11px; gap: 8px; flex-shrink: 0; }
   .nav-actions > .button > svg { width: 13px; }
-  .mobile-menu-toggle { width: 34px; height: 34px; }
+  .mobile-menu-toggle { width: 34px; height: 34px; flex-shrink: 0; }
   .mobile-nav { padding-inline: 20px; }
   .hero-container { padding: 36px 0 360px; }
   .hero h1 { font-size: clamp(33px, 8.5vw, 48px); letter-spacing: -1.8px; margin: 16px 0 18px; line-height: 1.12; }
@@ -1201,7 +1201,13 @@ button.scenario-orb:hover { background: #f6f9eb; border-color: #8c9e7e; transfor
 }
 
 @media (max-width: 420px) {
-  .container, .nav-wrap { width: calc(100% - 24px); }
+  .container, .nav-wrap { width: calc(100% - 20px); }
+  .nav-wrap { gap: 6px; }
+  .brand { font-size: 21px; gap: 3px; letter-spacing: -1px; }
+  .brand svg { width: 23px; height: 23px; }
+  .nav-actions { gap: 6px; flex-shrink: 0; }
+  .nav-start-btn { padding: 7px 11px; font-size: 10px; gap: 6px; }
+  .mobile-menu-toggle { width: 32px; height: 32px; flex-shrink: 0; }
   .hero-cta { flex-direction: column; align-items: stretch; width: 100%; max-width: 290px; }
   .hero-cta .button, .watch-button { width: 100%; justify-content: center; }
   .explore-heading-actions .button { flex: 1 1 100%; width: 100%; }
@@ -1213,6 +1219,15 @@ button.scenario-orb:hover { background: #f6f9eb; border-color: #8c9e7e; transfor
   .topic-orb svg { width: 20px; height: 20px; }
   .topic-button { font-size: 9px; gap: 8px; }
   .progress-indicator li:not(:last-child)::after { width: 12px; }
+}
+
+@media (max-width: 350px) {
+  .container, .nav-wrap { width: calc(100% - 16px); }
+  .nav-wrap { gap: 4px; }
+  .brand { font-size: 19px; }
+  .nav-actions { gap: 4px; }
+  .nav-start-btn { padding: 6px 8px; font-size: 9px; }
+  .mobile-menu-toggle { width: 30px; height: 30px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
